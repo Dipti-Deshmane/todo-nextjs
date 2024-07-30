@@ -1,0 +1,22 @@
+{
+  "todos": [
+    {
+      "id": "7d29",
+      "userId": 1,
+      "title": "FirstTodo",
+      "completed": false
+    },
+    {
+      "id": "d972",
+      "userId": 1,
+      "title": "SecondTodo",
+      "completed": false
+    },
+    {
+      "id": "c463",
+      "userId": 1,
+      "title": "ThirdTodo",
+      "completed": false
+    }
+  ]
+}
