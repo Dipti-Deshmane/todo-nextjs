@@ -2,6 +2,21 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Todo, fetchTodos, addTodo, updateTodo, deleteTodo } from "./service";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  TextField,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+  Divider,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -80,73 +95,83 @@ export default function Home() {
 
   if (isError) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        There is an error
-      </main>
+      <Container maxWidth="md" sx={{ mt: 4 }}>
+        <Typography variant="h6" color="error">
+          There is an error
+        </Typography>
+      </Container>
     );
   }
 
   if (isLoading) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        It is Loading...
-      </main>
+      <Container
+        maxWidth="md"
+        sx={{ mt: 4, display: "flex", justifyContent: "center" }}
+      >
+        <CircularProgress />
+      </Container>
     );
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center">
-      <h1
-        className="text-xl"
-        style={{ marginBottom: "20px", marginTop: "250px" }}
+    <Container
+      maxWidth="md"
+      sx={{
+        mt: 10,
+        backgroundColor: "#F8F8F8",
+        padding: "1px",
+        paddingBottom: "10px",
+      }}
+    >
+      <Typography
+        variant="h4"
+        align="center"
+        gutterBottom
+        style={{ color: "black", marginTop: "30px" }}
       >
         TODOS
-      </h1>
-      <div className="flex flex-col ">
+      </Typography>
+      <List style={{ color: "black" }}>
         {todosData?.slice(0, 5).map((todo) => (
-          <div className="flex" key={todo.id}>
-            <h2 style={{ width: "150px" }}>{" " + todo.title}</h2>
-            <button
+          <ListItem key={todo.id} divider>
+            <ListItemText primary={todo.title} />
+            <IconButton
+              style={{ marginRight: "14px" }}
               onClick={() => handleEditTodo(todo)}
-              style={{ marginLeft: "20px" }}
+              edge="end"
+              aria-label="edit"
             >
-              Edit
-            </button>
-            <button
+              <EditIcon />
+            </IconButton>
+            <IconButton
               onClick={() => handleDeleteTodo(todo.id)}
-              style={{ marginLeft: "20px" }}
+              edge="end"
+              aria-label="delete"
             >
-              Delete
-            </button>
-          </div>
+              <DeleteIcon />
+            </IconButton>
+          </ListItem>
         ))}
-      </div>
+      </List>
 
-      <input
-        type="text"
-        value={newTodo}
-        onChange={(e) => setNewTodo(e.target.value)}
-        placeholder="New Todo"
-        style={{
-          color: "black",
-          marginBottom: "20px",
-          marginTop: "20px",
-          height: "30px",
-          width: "250px",
-        }}
-      />
-      <button
-        onClick={editingTodo ? handleUpdateTodo : handleAddTodo}
-        style={{
-          backgroundColor: "white",
-          color: "black",
-          padding: "5px",
-          borderRadius: "5px",
-          fontWeight: "bold",
-        }}
-      >
-        {editingTodo ? "Update Todo" : "Add Todo"}
-      </button>
-    </main>
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <TextField
+          label="New Todo"
+          variant="outlined"
+          fullWidth
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={editingTodo ? handleUpdateTodo : handleAddTodo}
+        >
+          {editingTodo ? "Update Todo" : "Add Todo"}
+        </Button>
+      </Box>
+    </Container>
   );
 }
